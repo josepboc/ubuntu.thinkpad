@@ -8,6 +8,7 @@ sudo apt-get install dotnet-sdk-2.2
 
 Visual Studio Code
 Download .deb from https://code.visualstudio.com/download
+
 ```sudo dpkg -i code_1.33.1-1554971066_amd64.deb```
 
 To solve Omnisharp not finding framework:
