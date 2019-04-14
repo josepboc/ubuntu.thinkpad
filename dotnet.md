@@ -3,7 +3,8 @@ Install dotnet
 sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get install apt-transport-https
 sudo apt-get update
-sudo apt-get install dotnet-sdk-2.2```
+sudo apt-get install dotnet-sdk-2.2
+```
 
 Visual Studio Code
 Download .deb from https://code.visualstudio.com/download
