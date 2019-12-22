@@ -1,0 +1,76 @@
+Lenovo X250 tweeking in linux
+Why the Lenovo X250
+My needs: a daily driver laptop, very cheap, light, small, upgradable and serviceable. (want to swap hdd, thermal paste etc) and Linux friendly. All things considered, I came up with a bargain on eBay, a 12.5"  Lenovo ThinkPad X250, i5 5300U with 8gb RAM, 128gb SSD, 2 batteries and HD screen with a barely noticeable bruise (which shall be swapped latter) for 130Euro.
+
+
+X250 condition
+
+
+X250 keyboard and screen
+
+The Lenovo X250 in 2019 It's preparation for linux daily driver.
+The batteries, yep no typo --two batteries-- this model has 2, one internal the other external were ~82% capacity each, the screen bruise is somehow noticeable, the fan and thermals were alright, yet first things to do; swap thermal paste for a top of the line one and swap the 128gb SSD for one bigger a 256SSD. So price tag till now:
+X250 + Postage = 130Euro
+Grizzly  Kryonaut = 5Euro
+Western Digital Green SSD 256Gb = 33Euro
+FHD IPS screen = 75Euro
+Linux Mint19 = Free
+
+X250 Interior
+
+The thermal paste change settled the temperatures in full load (15min test) under 65 degrees, ( s-tui tool to monitor and stress CPU, sysbench to stress).
+
+The i5-5300U CPU has a 'built in' GPU, the HD5500 and together both can consume up to 15w of power. When this power consumption threshold is exceeded the frequencies are lowered and the performance of the CPU, the GPU or both it takes a hit. The CPU/GPU throttling can also happen when the one of both achieves a certain temperature threshold, in the case of the X250 this doesn't happen due to good cooling. Even with default cooling/paste I could run stress tests at full CPU speed.
+
+Undervolting Lenovo X250 and optimizing battery life
+
+Next I decided to undervolt the CPU, this would allow even lower temperatures, more battery life and avoid package throttling, the 15watt limit! If both CPU and GPU consume less, less throttling will happen (duhh) and more performance one will get.
+To undervolt I used undervolt python package, after a couple tests I could lower my voltages with the following values:
+
+--core -100 --cache -100 --gpu -55 --uncore -70 --analogio -50
+The values might get lower but I want full stability under all circumstances.
+
+Hint: Don't just do stress tests, use the computer normally, and use it while doing the tests, I happen to pass lots of tests with -130mV in the core but crashed when opening firefox for example.
+
+In order to test I installed sysbench and ran the following command:
+sudo sysbench cpu --threads=4 --time=300 run
+My results were the following, yet what matters is that the temperature didn't go above 63 degress Celcius.
+
+CPU speed:
+    events per second:  2675.87
+
+General statistics:
+    total time:                          300.0013s
+    total number of events:              802769
+
+Latency (ms):
+         min:                                  1.09
+         avg:                                  1.49
+         max:                                 30.35
+         95th percentile:                      1.52
+         sum:                            1199489.59
+
+Threads fairness:
+    events (avg/stddev):           200692.2500/865.84
+    execution time (avg/stddev):   299.8724/0.00
+
+5 minutes after the test the temperatures drop to an very acceptable 37 degrees!
+
+Battery life: depends a lot on what I do, compiling, watching youtube, browsing, screen brightness, but safe to say that at 50% screen brightness, light browsing 5 hours easily.
+
+Now 2 important packages needed to be installed, these (basically) will tuneup the SO so it consumes a lot less energy, TLP will even make your fan be quieter in normal use: powertop and tlp
+
+To install TLP:
+$ sudo add-apt-repository ppa:linrunner/tlp
+$ sudo apt-get update
+$ sudo apt-get install tlp tlp-rdw 
+$ sudo tlp start 
+ 
+ 
+To install and configure powertop:
+$ sudo apt-get update
+$ sudo apt-get install powertop
+$ sudo powertop --auto-tune 
+
+On my lenovo X250 these steps gave me an extra 1h battery life and LOT quieter fan.
+
