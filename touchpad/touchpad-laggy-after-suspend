@@ -1,0 +1,13 @@
+I can confirm a similar issue with my touchpad on HP ProBook 450 G6 with Ubuntu 18.04, it was very laggy after suspend.
+
+What worked for me: create /lib/systemd/system-sleep/touchpad:
+
+#!/bin/sh
+
+case $1 in
+  post)
+    /sbin/rmmod i2c_hid && /sbin/modprobe i2c_hid 
+  ;;
+esac
+
+make file executable chmod +x /lib/systemd/system-sleep/touchpad and test (suspend computer and wake-up again)
